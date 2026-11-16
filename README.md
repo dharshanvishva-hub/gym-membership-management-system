@@ -67,6 +67,11 @@ D:\Project
 │   ├── data_preprocessing.py               # Data wrangling, IQR outlier analysis, time features
 │   ├── visualize_activity.py               # Matplotlib & Seaborn visualization generation
 │   └── gym_activity_analysis.ipynb         # Executed Jupyter Notebook with inline plots
+├── web/                                    # Interactive Modern Web Portal (Flask + Bootstrap 5 + Chart.js)
+│   ├── app.py                              # Web server & API routing
+│   ├── run_website.bat                     # One-click launcher script
+│   ├── templates/                          # HTML5 Jinja2 Templates (Dashboard, Members, Plans, Attendance, Trainers, Analytics)
+│   └── static/                             # CSS styling & JS scripts
 ├── visualizations/                         # High-resolution generated analytical charts
 │   ├── 01_attendance_by_day_of_week.png
 │   ├── 02_plan_popularity_and_revenue.png
@@ -128,6 +133,19 @@ python python/visualize_activity.py
 python -m notebook python/gym_activity_analysis.ipynb
 ```
 *(or open `python/gym_activity_analysis.ipynb` directly in VS Code / Jupyter Lab).*
+
+---
+
+### C. Running the Web Portal Application
+
+#### 1. Start the Web Server
+```powershell
+python web/app.py
+```
+*(Or double-click `web/run_website.bat`)*
+
+#### 2. Access in Web Browser
+Open: **`http://127.0.0.1:5000`**
 
 ---
 

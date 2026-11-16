@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Visual Analytics - Gym Management System{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="fw-bold mb-1 text-dark">
+                <i class="fa-solid fa-chart-line text-primary me-2"></i>Fitness Centre Activity Analytics & Visualizations
+            </h2>
+            <p class="text-muted mb-0">Exploratory Data Analysis generated with Python, Pandas, Matplotlib, and Seaborn (Course: 25ITC31).</p>
+        </div>
+        <span class="badge bg-dark px-3 py-2 fs-6">
+            <i class="fa-brands fa-python text-warning me-1"></i> Python Data Science Pipeline
+        </span>
+    </div>
+
+    <!-- Analytical Charts Grid -->
+    <div class="row g-4 mb-5">
+        <!-- Chart 1: Attendance Trends -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-calendar-week text-primary me-2"></i>1. Attendance by Day of Week & Shift
+                    </h6>
+                    <span class="badge bg-light text-muted border">Matplotlib/Seaborn</span>
+                </div>
+                <div class="card-body text-center p-2">
+                    <img src="{{ url_for('serve_visualization', filename='01_attendance_by_day_of_week.png') }}" class="img-fluid rounded border" alt="Attendance Trends">
+                </div>
+                <div class="card-footer bg-light small text-muted">
+                    <strong>Insight:</strong> Footfall peaks on Mondays and Wednesdays, tapering towards weekends. Morning shifts dominate weekdays.
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 2: Plan Popularity vs Revenue -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-coins text-success me-2"></i>2. Plan Popularity vs. Revenue Generation
+                    </h6>
+                    <span class="badge bg-light text-muted border">Dual-Axis Plot</span>
+                </div>
+                <div class="card-body text-center p-2">
+                    <img src="{{ url_for('serve_visualization', filename='02_plan_popularity_and_revenue.png') }}" class="img-fluid rounded border" alt="Plan Revenue">
+                </div>
+                <div class="card-footer bg-light small text-muted">
+                    <strong>Insight:</strong> Platinum Annual and Gold Half-Yearly generate over 60% of gym revenue despite lower total member headcounts.
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 3: Peak Rush Hour Heatmap -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-fire text-danger me-2"></i>3. Peak Gym Traffic Heatmap (Hour vs Day)
+                    </h6>
+                    <span class="badge bg-light text-muted border">Seaborn Heatmap</span>
+                </div>
+                <div class="card-body text-center p-2">
+                    <img src="{{ url_for('serve_visualization', filename='05_hourly_checkin_heatmap.png') }}" class="img-fluid rounded border" alt="Hourly Heatmap">
+                </div>
+                <div class="card-footer bg-light small text-muted">
+                    <strong>Insight:</strong> Gym operations face two distinct surge windows: 06:00–08:30 AM (morning) and 17:30–20:00 PM (evening).
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 4: Trainer Workload Distribution -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-dumbbell text-warning me-2"></i>4. Trainer Client Allocation Workload
+                    </h6>
+                    <span class="badge bg-light text-muted border">Horizontal Bar</span>
+                </div>
+                <div class="card-body text-center p-2">
+                    <img src="{{ url_for('serve_visualization', filename='03_trainer_workload_distribution.png') }}" class="img-fluid rounded border" alt="Trainer Workload">
+                </div>
+                <div class="card-footer bg-light small text-muted">
+                    <strong>Insight:</strong> Trainers Rajesh Kumar (Strength) and Vikram Chandran (Bodybuilding) carry the highest coaching allocation.
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 5: Workout Preferences -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-pie-chart text-info me-2"></i>5. Workout Discipline Distribution
+                    </h6>
+                    <span class="badge bg-light text-muted border">Donut Chart</span>
+                </div>
+                <div class="card-body text-center p-2">
+                    <img src="{{ url_for('serve_visualization', filename='04_workout_type_preference_pie.png') }}" class="img-fluid rounded border" alt="Workout Pie Chart">
+                </div>
+                <div class="card-footer bg-light small text-muted">
+                    <strong>Insight:</strong> Weight Training (45.2%) and Cardio (22.6%) represent the predominant fitness disciplines.
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 6: Member Demographics -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-venus-mars text-primary me-2"></i>6. Member Age Demographics by Gender
+                    </h6>
+                    <span class="badge bg-light text-muted border">Box Plot & Bins</span>
+                </div>
+                <div class="card-body text-center p-2">
+                    <img src="{{ url_for('serve_visualization', filename='06_member_age_distribution_boxplot.png') }}" class="img-fluid rounded border" alt="Age Distribution">
+                </div>
+                <div class="card-footer bg-light small text-muted">
+                    <strong>Insight:</strong> Average member age is 29.3 years (median 27 years), with the primary demographic bracket falling between 21 and 35.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue & Renewal Summaries -->
+    <div class="row g-4">
+        <!-- Revenue Summary Table -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-file-invoice-dollar text-success me-2"></i>Revenue Breakdown by Plan</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small text-uppercase">
+                            <tr>
+                                <th>Plan Name</th>
+                                <th>Duration</th>
+                                <th>Fee (₹)</th>
+                                <th>Total Subs</th>
+                                <th>Total Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in revenue_by_plan %}
+                            <tr>
+                                <td class="fw-semibold">{{ r.plan_name }}</td>
+                                <td>{{ r.duration_months }} mo</td>
+                                <td>₹{{ "{:,.2f}".format(r.fee) }}</td>
+                                <td><span class="badge bg-primary rounded-pill">{{ r.total_subscriptions }}</span></td>
+                                <td class="fw-bold text-success">₹{{ "{:,.2f}".format(r.total_revenue) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expiring Soon Subscriptions -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-triangle-exclamation text-warning me-2"></i>Memberships Expiring Soon (&le; 7 Days)</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small text-uppercase">
+                            <tr>
+                                <th>Member Name</th>
+                                <th>Contact</th>
+                                <th>Plan</th>
+                                <th>Expiry Date</th>
+                                <th>Days Left</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for e in expiring_soon %}
+                            <tr>
+                                <td class="fw-semibold">{{ e.member_name }}</td>
+                                <td><small>{{ e.contact_number }}</small></td>
+                                <td><span class="badge bg-secondary-subtle text-dark border">{{ e.plan_name }}</span></td>
+                                <td class="text-danger fw-bold">{{ e.expiry_date }}</td>
+                                <td>
+                                    <span class="badge bg-warning text-dark px-2 py-1">
+                                        {{ e.days_left }} days left
+                                    </span>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-3">No memberships expiring within the next 7 days.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

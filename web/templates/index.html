@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Gym Management System{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <!-- Header Banner -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="fw-bold mb-1 text-dark">
+                <i class="fa-solid fa-gauge-high text-primary me-2"></i>Fitness Centre Operations Dashboard
+            </h2>
+            <p class="text-muted mb-0">Overview of active memberships, daily footfall, revenue analytics, and trainer allocations.</p>
+        </div>
+        <div class="d-flex gap-2 mt-2 mt-md-0">
+            <a href="{{ url_for('members') }}" class="btn btn-primary btn-sm px-3 shadow-sm">
+                <i class="fa-solid fa-user-plus me-1"></i> Add Member
+            </a>
+            <a href="{{ url_for('attendance') }}" class="btn btn-warning btn-sm px-3 shadow-sm text-dark fw-semibold">
+                <i class="fa-solid fa-qrcode me-1"></i> Check-in Desk
+            </a>
+            <a href="{{ url_for('analytics') }}" class="btn btn-outline-secondary btn-sm px-3">
+                <i class="fa-solid fa-chart-pie me-1"></i> Visual Reports
+            </a>
+        </div>
+    </div>
+
+    <!-- Alert for Expiring Soon Subscriptions -->
+    {% if expiring_count > 0 %}
+    <div class="alert alert-warning border-start border-warning border-4 shadow-sm d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <i class="fa-solid fa-triangle-exclamation fs-5 me-2 text-warning"></i>
+            <strong>Renewal Alert:</strong> There are <strong>{{ expiring_count }}</strong> membership(s) expiring within the next 7 days!
+        </div>
+        <a href="{{ url_for('plans') }}" class="btn btn-sm btn-dark">View & Renew</a>
+    </div>
+    {% endif %}
+
+    <!-- KPI Metric Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card kpi-card bg-primary text-white shadow-sm border-0 h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-white-50 text-uppercase small fw-bold">Total Registered Members</span>
+                        <h2 class="display-6 fw-bold mb-0 mt-1">{{ total_members }}</h2>
+                        <small class="text-white-50"><i class="fa-solid fa-circle-check text-success me-1"></i>Active in database</small>
+                    </div>
+                    <div class="kpi-icon bg-white text-primary">
+                        <i class="fa-solid fa-users fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card kpi-card bg-success text-white shadow-sm border-0 h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-white-50 text-uppercase small fw-bold">Active Membership Plans</span>
+                        <h2 class="display-6 fw-bold mb-0 mt-1">{{ total_plans }}</h2>
+                        <small class="text-white-50"><i class="fa-solid fa-tags text-warning me-1"></i>Tiered packages</small>
+                    </div>
+                    <div class="kpi-icon bg-white text-success">
+                        <i class="fa-solid fa-id-card fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card kpi-card bg-warning text-dark shadow-sm border-0 h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-dark-50 text-uppercase small fw-bold">Certified Trainers</span>
+                        <h2 class="display-6 fw-bold mb-0 mt-1">{{ total_trainers }}</h2>
+                        <small class="text-muted"><i class="fa-solid fa-award text-dark me-1"></i>CrossFit, Yoga, HIIT</small>
+                    </div>
+                    <div class="kpi-icon bg-dark text-warning">
+                        <i class="fa-solid fa-dumbbell fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card kpi-card bg-danger text-white shadow-sm border-0 h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-white-50 text-uppercase small fw-bold">Total Revenue Generated</span>
+                        <h2 class="display-6 fw-bold mb-0 mt-1">₹{{ "{:,.0f}".format(total_revenue) }}</h2>
+                        <small class="text-white-50"><i class="fa-solid fa-arrow-trend-up me-1"></i>Accumulated subscriptions</small>
+                    </div>
+                    <div class="kpi-icon bg-white text-danger">
+                        <i class="fa-solid fa-indian-rupee-sign fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <!-- Revenue by Plan Bar Chart -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-chart-column text-primary me-2"></i>Revenue Generated by Membership Plan
+                    </h5>
+                    <span class="badge bg-light text-muted border">Live Database Metrics</span>
+                </div>
+                <div class="card-body">
+                    <canvas id="revenuePlanChart" height="110"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workout Type Doughnut Chart -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-chart-pie text-warning me-2"></i>Workout Distribution
+                    </h5>
+                    <span class="badge bg-light text-muted border">Daily Sessions</span>
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <canvas id="workoutDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tables Row: Recent Activity & Trainer Load -->
+    <div class="row g-4 mb-4">
+        <!-- Recent Attendance Stream -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-clock-rotate-left text-success me-2"></i>Recent Attendance Activity
+                    </h5>
+                    <a href="{{ url_for('attendance') }}" class="btn btn-sm btn-link text-decoration-none">View All Attendance</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small text-uppercase">
+                            <tr>
+                                <th>Member</th>
+                                <th>Date</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Workout</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in recent_attendance %}
+                            <tr>
+                                <td class="fw-semibold text-dark">
+                                    <i class="fa-solid fa-user-circle text-primary me-1"></i> {{ a.member_name }}
+                                </td>
+                                <td><span class="badge bg-light text-dark border">{{ a.attendance_date }}</span></td>
+                                <td><i class="fa-regular fa-clock text-success me-1"></i>{{ a.check_in_time }}</td>
+                                <td>
+                                    {% if a.check_out_time %}
+                                        <i class="fa-regular fa-clock text-danger me-1"></i>{{ a.check_out_time }}
+                                    {% else %}
+                                        <span class="badge bg-success-subtle text-success">In-Progress</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary-subtle text-secondary">{{ a.workout_type }}</span>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-3">No attendance records found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trainer Active Client Allocation -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-user-shield text-info me-2"></i>Trainer Client Allocation
+                    </h5>
+                    <a href="{{ url_for('trainers') }}" class="btn btn-sm btn-link text-decoration-none">Manage Trainers</a>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for t in trainer_workload %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <div>
+                                <h6 class="mb-0 fw-bold">{{ t.trainer_name }}</h6>
+                                <small class="text-muted"><i class="fa-solid fa-medal text-warning me-1"></i>{{ t.specialization }}</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">
+                                {{ t.active_clients }} Clients
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Load dynamic Chart.js charts from API endpoint
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/api/chart-data')
+        .then(response => response.json())
+        .then(data => {
+            // 1. Revenue by Plan Bar Chart
+            const ctx1 = document.getElementById('revenuePlanChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: data.plan_names,
+                    datasets: [
+                        {
+                            label: 'Revenue (₹)',
+                            data: data.plan_revenues,
+                            backgroundColor: '#2ecc71',
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Subscribers',
+                            data: data.plan_subs,
+                            backgroundColor: '#3498db',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // 2. Workout Distribution Doughnut Chart
+            const ctx2 = document.getElementById('workoutDistributionChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: data.workout_labels,
+                    datasets: [{
+                        data: data.workout_counts,
+                        backgroundColor: ['#e74c3c', '#3498db', '#f39c12', '#9b59b6', '#1abc9c', '#34495e']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+});
+</script>
+{% endblock %}
