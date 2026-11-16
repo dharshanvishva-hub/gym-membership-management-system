@@ -13,6 +13,8 @@
 
 ## 1. Entity-Relationship (ER) Diagram
 
+![Entity Relationship Diagram](er_diagram.png)
+
 The system models six major entities with well-defined primary keys, foreign key constraints, and relational cardinalities.
 
 ```mermaid

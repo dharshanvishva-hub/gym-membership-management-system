@@ -75,6 +75,7 @@ D:\Project
 │   ├── 05_hourly_checkin_heatmap.png
 │   └── 06_member_age_distribution_boxplot.png
 ├── docs/                                   # Software Engineering & DBMS Documentation
+│   ├── er_diagram.png                      # High-resolution Entity-Relationship Diagram
 │   ├── SRS.md                              # IEEE 830 Software Requirements Specification
 │   ├── SYSTEM_DESIGN.md                    # System Architecture, Use Case & Class Diagrams
 │   ├── ER_AND_NORMALIZATION.md             # ER Diagram, Relational Model, 1NF to BCNF Proof
@@ -85,7 +86,15 @@ D:\Project
 
 ---
 
-## 🚀 5. Execution Instructions
+## 🗄️ 5. Entity-Relationship (ER) Diagram
+
+The normalized relational database schema follows strict 3NF/BCNF standards across 6 core entities:
+
+![Entity-Relationship Diagram](docs/er_diagram.png)
+
+---
+
+## 🚀 6. Execution Instructions
 
 ### A. Running the Java Application
 
@@ -122,7 +131,7 @@ python -m notebook python/gym_activity_analysis.ipynb
 
 ---
 
-## 📊 6. Key Data Science Insights & Generated Visualizations
+## 📊 7. Key Data Science Insights & Generated Visualizations
 
 The Python data analytics pipeline discovered the following behavioral insights from gym records:
 
@@ -137,17 +146,17 @@ The Python data analytics pipeline discovered the following behavioral insights 
 
 ---
 
-## 📑 7. Documentation Index
+## 📑 8. Documentation Index
 
-- 📘 [Software Requirements Specification (SRS)](file:///D:/Project/docs/SRS.md)
-- 📐 [System Design & Architecture (Use Case, Class Diagrams)](file:///D:/Project/docs/SYSTEM_DESIGN.md)
-- 🗄️ [ER Diagram, Relational Model & Normalization (1NF to BCNF)](file:///D:/Project/docs/ER_AND_NORMALIZATION.md)
-- 🧪 [Software Testing Document & Test Cases](file:///D:/Project/docs/TESTING.md)
-- 📋 [Sample Inputs & Outputs for Lab Viva](file:///D:/Project/docs/SAMPLE_INPUT_OUTPUT.md)
+- 📘 [Software Requirements Specification (SRS)](docs/SRS.md)
+- 📐 [System Design & Architecture (Use Case, Class Diagrams)](docs/SYSTEM_DESIGN.md)
+- 🗄️ [ER Diagram, Relational Model & Normalization (1NF to BCNF)](docs/ER_AND_NORMALIZATION.md)
+- 🧪 [Software Testing Document & Test Cases](docs/TESTING.md)
+- 📋 [Sample Inputs & Outputs for Lab Viva](docs/SAMPLE_INPUT_OUTPUT.md)
 
 ---
 
-## 👤 Author Information
+## 👤 9. Author Information
 - **Name:** V. Dharshan
 - **Register Number:** `732925ITR027`
 - **Class:** 25IT3A
